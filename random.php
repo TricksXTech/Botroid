@@ -78,4 +78,52 @@ function randomAny() {
             return randomBool();
     }
 }
+
+function randomWeighted(array $items) {
+    $sum = array_sum($items);
+    $rand = random_int(1, $sum);
+    foreach ($items as $item => $weight) {
+        $rand -= $weight;
+        if ($rand <= 0) return $item;
+    }
+}
+
+function randomPercent($precision = 2) {
+    return round(mt_rand() / mt_getrandmax() * 100, $precision);
+}
+
+function randomIp() {
+    return join('.', [
+        random_int(1, 255),
+        random_int(0, 255),
+        random_int(0, 255),
+        random_int(1, 255)
+    ]);
+}
+
+function randomColorHex() {
+    return '#' . substr(bin2hex(random_bytes(3)), 0, 6);
+}
+
+function randomUsername($length = 8) {
+    return strtolower(randomString($length)) . random_int(10, 99);
+}
+
+function randomSlug($words = 3) {
+    $dict = ['fast','bot','cloud','node','secure','auto','smart','data','flow','core'];
+    shuffle($dict);
+    return implode('-', array_slice($dict, 0, $words));
+}
+
+function randomDate($start, $end, $format = 'Y-m-d') {
+    return date($format, random_int(strtotime($start), strtotime($end)));
+}
+
+function randomPublicId($len = 12) {
+    return rtrim(strtr(base64_encode(random_bytes($len)), '+/', '-_'), '=');
+}
+
+function randomChance($percent) {
+    return random_int(1, 100) <= $percent;
+}
 ?>
