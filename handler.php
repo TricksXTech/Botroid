@@ -1,5 +1,26 @@
 <?php
 
+function getUserLink($chat_id){
+$fst_data = file_get_contents("https://api.telegram.org/bot".apiToken."/getChat?chat_id=$chat_id");
+$data = json_decode($fst_data,true);
+$user_name = $data["result"]["username"];
+if(!$user_name){
+$user_first_name = $data["result"]["first_name"];
+$user_last_name = $data["result"]["last_name"];
+return "[$user_first_name $user_last_name](tg://user?id=$chat_id)";
+}else{
+return "$user_name";    
+}
+}
+
+function getName($chat_id){
+$fst_data = file_get_contents("https://api.telegram.org/bot".apiToken."/getChat?chat_id=$chat_id");
+$data = json_decode($fst_data,true); 
+$user_first_name = $data["result"]["first_name"];
+$user_last_name = $data["result"]["last_name"];
+return "$user_first_name $user_last_name";
+}
+
 function usercast($userid){
   file_get_contents("/?user=$userid");
 }
